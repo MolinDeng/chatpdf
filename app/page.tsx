@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { UserButton, auth } from '@clerk/nextjs';
 import Link from 'next/link';
 import { ArrowRight, LogIn } from 'lucide-react';
-// import FileUpload from '@/components/FileUpload';
+import FileUpload from '@/components/FileUpload';
 // import { checkSubscription } from '@/lib/subscription';
 import SubscriptionButton from '@/components/SubscriptionButton';
 // import { db } from '@/lib/db';
@@ -50,7 +50,7 @@ export default async function Home() {
             answer questions and understand research with AI
           </p>
 
-          {/* <div className="w-full mt-4">
+          <div className="w-full mt-4">
             {isAuth ? (
               <FileUpload />
             ) : (
@@ -61,7 +61,7 @@ export default async function Home() {
                 </Button>
               </Link>
             )}
-          </div> */}
+          </div>
         </div>
       </div>
     </div>

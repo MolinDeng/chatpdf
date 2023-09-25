@@ -1,10 +1,10 @@
 'use client';
-import { uploadToS3 } from '@/lib/s3';
+import React from 'react';
+import axios from 'axios';
+import { uploadToS3 } from '@/lib/aws-s3';
 import { useMutation } from '@tanstack/react-query';
 import { Inbox, Loader2 } from 'lucide-react';
-import React from 'react';
 import { useDropzone } from 'react-dropzone';
-import axios from 'axios';
 import { useToast } from '@/components/ui/use-toast';
 import { useRouter } from 'next/navigation';
 
@@ -39,12 +39,11 @@ const FileUpload = () => {
         // bigger than 10mb!
         toast({
           title: 'Uh oh! Something went wrong.',
-          description: 'File too large',
+          description: 'File too large! File size should be less than 10MB',
           variant: 'destructive',
         });
         return;
       }
-
       try {
         setUploading(true);
         const data = await uploadToS3(file);
@@ -56,24 +55,29 @@ const FileUpload = () => {
           });
           return;
         }
-        mutate(data, {
-          onSuccess: ({ chat_id }) => {
-            toast({
-              title: 'Success!',
-              description: 'Chat created!',
-              variant: 'destructive',
-            });
-            router.push(`/chat/${chat_id}`);
-          },
-          onError: (err) => {
-            toast({
-              title: 'Uh oh! Something went wrong.',
-              description: 'Error creating chat',
-              variant: 'destructive',
-            });
-            console.error(err);
-          },
+        toast({
+          title: 'Success!',
+          description: 'Chat created!',
+          variant: 'destructive',
         });
+        // mutate(data, {
+        //   onSuccess: ({ chat_id }) => {
+        //     toast({
+        //       title: 'Success!',
+        //       description: 'Chat created!',
+        //       variant: 'destructive',
+        //     });
+        //     router.push(`/chat/${chat_id}`);
+        //   },
+        //   onError: (err) => {
+        //     toast({
+        //       title: 'Uh oh! Something went wrong.',
+        //       description: 'Error creating chat',
+        //       variant: 'destructive',
+        //     });
+        //     console.error(err);
+        //   },
+        // });
       } catch (error) {
         console.log(error);
       } finally {
