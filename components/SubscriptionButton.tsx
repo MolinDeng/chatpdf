@@ -1,7 +1,7 @@
-"use client";
-import React from "react";
-import { Button } from "./ui/button";
-import axios from "axios";
+'use client';
+import React from 'react';
+import { Button } from '@/components/ui/button';
+import axios from 'axios';
 
 type Props = { isPro: boolean };
 
@@ -10,7 +10,7 @@ const SubscriptionButton = (props: Props) => {
   const handleSubscription = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("/api/stripe");
+      const response = await axios.get('/api/stripe');
       window.location.href = response.data.url;
     } catch (error) {
       console.error(error);
@@ -20,7 +20,7 @@ const SubscriptionButton = (props: Props) => {
   };
   return (
     <Button disabled={loading} onClick={handleSubscription} variant="outline">
-      {props.isPro ? "Manage Subscriptions" : "Get Pro"}
+      {props.isPro ? 'Manage Subscriptions' : 'Get Pro'}
     </Button>
   );
 };

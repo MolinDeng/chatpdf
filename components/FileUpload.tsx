@@ -1,16 +1,17 @@
-"use client";
-import { uploadToS3 } from "@/lib/s3";
-import { useMutation } from "@tanstack/react-query";
-import { Inbox, Loader2 } from "lucide-react";
-import React from "react";
-import { useDropzone } from "react-dropzone";
-import axios from "axios";
-import { toast } from "react-hot-toast";
-import { useRouter } from "next/navigation";
+'use client';
+import { uploadToS3 } from '@/lib/s3';
+import { useMutation } from '@tanstack/react-query';
+import { Inbox, Loader2 } from 'lucide-react';
+import React from 'react';
+import { useDropzone } from 'react-dropzone';
+import axios from 'axios';
+import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 // https://github.com/aws/aws-sdk-js-v3/issues/4126
 
 const FileUpload = () => {
+  const { toast } = useToast();
   const router = useRouter();
   const [uploading, setUploading] = React.useState(false);
   const { mutate, isLoading } = useMutation({
@@ -21,7 +22,7 @@ const FileUpload = () => {
       file_key: string;
       file_name: string;
     }) => {
-      const response = await axios.post("/api/create-chat", {
+      const response = await axios.post('/api/create-chat', {
         file_key,
         file_name,
       });
@@ -30,31 +31,46 @@ const FileUpload = () => {
   });
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: { "application/pdf": [".pdf"] },
+    accept: { 'application/pdf': ['.pdf'] },
     maxFiles: 1,
     onDrop: async (acceptedFiles) => {
       const file = acceptedFiles[0];
       if (file.size > 10 * 1024 * 1024) {
         // bigger than 10mb!
-        toast.error("File too large");
+        toast({
+          title: 'Uh oh! Something went wrong.',
+          description: 'File too large',
+          variant: 'destructive',
+        });
         return;
       }
 
       try {
         setUploading(true);
         const data = await uploadToS3(file);
-        console.log("meow", data);
         if (!data?.file_key || !data.file_name) {
-          toast.error("Something went wrong");
+          toast({
+            title: 'Uh oh! Something went wrong.',
+            description: 'TODO', // TODO
+            variant: 'destructive',
+          });
           return;
         }
         mutate(data, {
           onSuccess: ({ chat_id }) => {
-            toast.success("Chat created!");
+            toast({
+              title: 'Success!',
+              description: 'Chat created!',
+              variant: 'destructive',
+            });
             router.push(`/chat/${chat_id}`);
           },
           onError: (err) => {
-            toast.error("Error creating chat");
+            toast({
+              title: 'Uh oh! Something went wrong.',
+              description: 'Error creating chat',
+              variant: 'destructive',
+            });
             console.error(err);
           },
         });
@@ -70,7 +86,7 @@ const FileUpload = () => {
       <div
         {...getRootProps({
           className:
-            "border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col",
+            'border-dashed border-2 rounded-xl cursor-pointer bg-gray-50 py-8 flex justify-center items-center flex-col',
         })}
       >
         <input {...getInputProps()} />
