@@ -14,6 +14,7 @@ const FileUpload = () => {
   const { toast } = useToast();
   const router = useRouter();
   const [uploading, setUploading] = React.useState(false);
+  // Unlike queries, mutations are typically used to create/update/delete data or perform server side-effects.
   const { mutate, isLoading } = useMutation({
     mutationFn: async ({
       file_key,
@@ -55,29 +56,24 @@ const FileUpload = () => {
           });
           return;
         }
-        toast({
-          title: 'Success!',
-          description: 'Chat created!',
-          variant: 'destructive',
+
+        mutate(data, {
+          onSuccess: ({ chat_id }) => {
+            toast({
+              title: 'Success!',
+              description: 'Chat created!',
+            });
+            router.push(`/chat/${chat_id}`);
+          },
+          onError: (err) => {
+            toast({
+              title: 'Uh oh! Something went wrong.',
+              description: 'Error creating chat',
+              variant: 'destructive',
+            });
+            console.error(err);
+          },
         });
-        // mutate(data, {
-        //   onSuccess: ({ chat_id }) => {
-        //     toast({
-        //       title: 'Success!',
-        //       description: 'Chat created!',
-        //       variant: 'destructive',
-        //     });
-        //     router.push(`/chat/${chat_id}`);
-        //   },
-        //   onError: (err) => {
-        //     toast({
-        //       title: 'Uh oh! Something went wrong.',
-        //       description: 'Error creating chat',
-        //       variant: 'destructive',
-        //     });
-        //     console.error(err);
-        //   },
-        // });
       } catch (error) {
         console.log(error);
       } finally {
