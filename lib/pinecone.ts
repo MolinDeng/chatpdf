@@ -31,24 +31,29 @@ export async function loadS3IntoPinecone(fileKey: string) {
     throw new Error('could not download from s3');
   }
   // loading pdf into memory
-  const loader = new PDFLoader(file_name);
-  const pages = (await loader.load()) as PDFPage[];
+  try {
+    const loader = new PDFLoader(file_name);
+    const pages = (await loader.load()) as PDFPage[];
 
-  // 2. split and segment each page into smaller documents
-  const documents = await Promise.all(pages.map(prepareDocument));
+    // 2. split and segment each page into smaller documents
+    const documents = await Promise.all(pages.map(prepareDocument));
 
-  // 3. Creating embeddings and Vectorization for these smaller documents
-  const vectors = await Promise.all(documents.flat().map(vectorization));
+    // 3. Creating embeddings and Vectorization for these smaller documents
+    const vectors = await Promise.all(documents.flat().map(vectorization));
 
-  // 4. upload to pinecone
-  const client = getPineconeClient();
-  const pineconeIndex = client.index(process.env.PINECONE_INDEX_NAME!);
-  const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+    // 4. upload to pinecone
+    const client = getPineconeClient();
+    const pineconeIndex = client.index(process.env.PINECONE_INDEX_NAME!);
+    const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
 
-  // 5. inserting vectors into pinecone'
-  await namespace.upsert(vectors);
+    // 5. inserting vectors into pinecone'
+    await namespace.upsert(vectors);
+  } catch (error) {
+    console.log('error loading s3 into pinecone', error);
+    throw error;
+  }
 
-  return documents[0];
+  // return documents[0];
 }
 
 async function vectorization(doc: Document) {
@@ -80,7 +85,7 @@ async function prepareDocument(page: PDFPage) {
   // pageContent = pageContent.replace(/\n/g, '');
   // split the docs
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 512,
+    chunkSize: 1024,
     chunkOverlap: 20,
     separators: ['\n', ' ', '.', ',', '!', '?', ';', ':'],
   });
@@ -94,4 +99,42 @@ async function prepareDocument(page: PDFPage) {
     }),
   ]);
   return docs;
+}
+
+export async function getMatchesFromEmbeddings(
+  embeddings: number[],
+  fileKey: string
+) {
+  try {
+    const client = getPineconeClient();
+    const pineconeIndex = client.index(process.env.PINECONE_INDEX_NAME!);
+    const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
+    const queryResult = await namespace.query({
+      topK: 5,
+      vector: embeddings,
+      includeMetadata: true,
+    });
+    return queryResult.matches || [];
+  } catch (error) {
+    console.log('error querying embeddings', error);
+    throw error;
+  }
+}
+
+export async function getContext(query: string, fileKey: string) {
+  const queryEmbeddings = await getEmbeddings(query);
+  const matches = await getMatchesFromEmbeddings(queryEmbeddings, fileKey);
+
+  const qualifyingDocs = matches.filter(
+    (match) => match.score && match.score > 0.7
+  );
+
+  type Metadata = {
+    text: string;
+    pageNumber: number;
+  };
+
+  let docs = qualifyingDocs.map((match) => (match.metadata as Metadata).text);
+  // 5 vectors
+  return docs.join('\n').substring(0, 3000);
 }

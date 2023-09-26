@@ -1,10 +1,10 @@
 'use client';
-import { DrizzleChat } from '@/lib/db/schema';
-import Link from 'next/link';
 import React from 'react';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { MessageCircle, PlusCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { DrizzleChat } from '@/lib/db/schema';
 import axios from 'axios';
 import SubscriptionButton from '@/components/SubscriptionButton';
 
@@ -16,9 +16,19 @@ type Props = {
 
 const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
   const [loading, setLoading] = React.useState(false);
-
+  for (var i = 2; i < 10; i++) {
+    chats.push({
+      id: i,
+      userId: 'test',
+      pdfName: 'test',
+      pdfUrl:
+        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
+      createdAt: new Date(),
+      fileKey: 'asda',
+    });
+  }
   return (
-    <div className="w-full max-h-screen overflow-scroll soff p-4 text-gray-200 bg-gray-900">
+    <div className="w-full h-full p-4 text-gray-200 bg-gray-900">
       <Link href="/">
         <Button className="w-full border-dashed border-white border">
           <PlusCircle className="mr-2 w-4 h-4" />
