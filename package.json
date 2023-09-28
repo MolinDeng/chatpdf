@@ -35,6 +35,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-dropzone": "^14.2.3",
+    "react-icons": "^4.11.0",
     "stripe": "^13.7.0",
     "tailwind-merge": "^1.14.0",
     "tailwindcss-animate": "^1.0.7"
