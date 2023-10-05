@@ -1,4 +1,4 @@
-import SignInComp from '@/components/sign-in-comp';
+import SignInComp from '@/components/SignInComp';
 import { SignUp } from '@clerk/nextjs';
 
 export default function Page() {

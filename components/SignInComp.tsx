@@ -66,11 +66,11 @@ export default function SignInComp({
             </span>
           </p>
           <div className="lg:hidden my-10 mx-auto max-w-fit ">{children}</div>
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center mx-8">
             {features.map((feature, i) => (
               <div
                 key={i}
-                className="bg-card-foreground rounded-2xl my-4 mx-8 flex items-center justify-start p-4 max-w-lg"
+                className="bg-card-foreground rounded-2xl my-4 flex items-center justify-start p-4 max-w-lg w-full"
               >
                 <feature.Icon className="sm:w-8 sm:h-8 w-6 h-6 mx-4 mr-8 text-eye opacity-80 flex-shrink-0" />
                 <div className="max-w-md">
