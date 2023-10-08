@@ -45,7 +45,6 @@ export async function loadS3IntoPinecone(fileKey: string) {
     const client = getPineconeClient();
     const pineconeIndex = client.index(process.env.PINECONE_INDEX_NAME!);
     const namespace = pineconeIndex.namespace(convertToAscii(fileKey));
-    console.log(vectors);
 
     // 5. inserting vectors into pinecone'
     await namespace.upsert(vectors);
@@ -61,7 +60,6 @@ async function vectorization(doc: Document) {
   try {
     const embeddings = await getEmbeddings(doc.pageContent);
     const hash = md5(doc.pageContent);
-
     return {
       id: hash,
       values: embeddings,

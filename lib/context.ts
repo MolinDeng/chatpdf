@@ -21,6 +21,7 @@ export async function getMatchesFromEmbeddings(
       topK: 5,
       vector: embeddings,
       includeMetadata: true,
+      filter: {}, // ! must include filter
     });
 
     return queryResult.matches || [];
