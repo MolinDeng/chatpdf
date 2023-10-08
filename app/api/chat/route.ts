@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       model: 'gpt-3.5-turbo',
       messages: [
         prompt,
-        ...messages.filter((message: Message) => message.role === 'user'),
+        ...messages.filter((message: Message) => message.role === 'user'), // append previous user messages
       ],
       stream: true,
     });

@@ -12,7 +12,7 @@ import { eq } from 'drizzle-orm';
 export default async function Home() {
   const { userId } = auth();
   const isAuth = !!userId;
-  const isPro = await checkSubscription();
+  // const isPro = await checkSubscription();
   let firstChat;
   if (userId) {
     firstChat = await db.select().from(chats).where(eq(chats.userId, userId));
@@ -37,9 +37,9 @@ export default async function Home() {
                     Go to Chats <ArrowRight className="ml-2" />
                   </Button>
                 </Link>
-                <div className="ml-3">
+                {/* <div className="ml-3">
                   <SubscriptionButton isPro={isPro} />
-                </div>
+                </div> */}
               </>
             )}
           </div>

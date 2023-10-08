@@ -12,6 +12,7 @@ import {
   FaTiktok,
   FaYahoo,
 } from 'react-icons/fa6';
+// TODO change features
 const features = [
   {
     Icon: FaChartLine,

@@ -29,14 +29,15 @@ export default async function ChatPage({ params: { chatId } }: Props) {
   }
 
   const currentChat = _chats.find((chat) => chat.id === parseInt(chatId));
-  const isPro = await checkSubscription();
+  // const isPro = await checkSubscription();
 
   return (
-    <div className="flex h-screen">
+    <div className="h-screen">
       <div className="flex w-full h-full">
         {/* chat sidebar */}
         <div className="flex-[2] max-w-xs">
-          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} />
+          {/* <ChatSideBar chats={_chats} chatId={parseInt(chatId)} isPro={isPro} /> */}
+          <ChatSideBar chats={_chats} chatId={parseInt(chatId)} />
         </div>
         {/* pdf viewer */}
         <div className="max-h-screen p-4 oveflow-scroll flex-[4]">
