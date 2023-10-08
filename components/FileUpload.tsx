@@ -51,7 +51,7 @@ const FileUpload = () => {
         if (!data?.file_key || !data.file_name) {
           toast({
             title: 'Uh oh! Something went wrong.',
-            description: 'TODO', // TODO
+            description: 'Uploading fails😭',
             variant: 'destructive',
           });
           return;

@@ -26,6 +26,7 @@ type PDFPage = {
 
 export async function loadS3IntoPinecone(fileKey: string) {
   // 1. obtain the pdf -> downlaod and read from pdf
+  // TODO can use S3Loader from langchain https://js.langchain.com/docs/modules/data_connection/document_loaders/integrations/web_loaders/s3
   const file_name = await downloadFromS3(fileKey);
   if (!file_name) {
     throw new Error('could not download from s3');
@@ -78,7 +79,7 @@ export const truncateStringByBytes = (str: string, bytes: number) => {
   const enc = new TextEncoder();
   return new TextDecoder('utf-8').decode(enc.encode(str).slice(0, bytes));
 };
-
+// TODO To be investigated
 async function prepareDocument(page: PDFPage) {
   let { pageContent, metadata } = page;
   // pageContent = pageContent.replace(/\n/g, '');
