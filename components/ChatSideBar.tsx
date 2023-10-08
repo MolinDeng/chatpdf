@@ -16,17 +16,7 @@ type Props = {
 
 const ChatSideBar = ({ chats, chatId, isPro }: Props) => {
   const [loading, setLoading] = React.useState(false);
-  for (var i = 2; i < 10; i++) {
-    chats.push({
-      id: i,
-      userId: 'test',
-      pdfName: 'test',
-      pdfUrl:
-        'https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf',
-      createdAt: new Date(),
-      fileKey: 'asda',
-    });
-  }
+
   return (
     <div className="w-full h-full p-4 text-gray-200 bg-gray-900">
       <Link href="/">

@@ -1,5 +1,4 @@
 /** @type {import('next').NextConfig} */
-// const nextConfig = {};
 const nextConfig = {
   webpack: (
     config,
@@ -9,15 +8,7 @@ const nextConfig = {
     //   '@aws-sdk/signature-v4-multi-region':
     //     'commonjs @aws-sdk/signature-v4-multi-region',
     // });
-    if (!isServer) {
-      config.resolve = {
-        ...config.resolve,
-        fallback: {
-          ...config.resolve.fallback,
-          fs: false,
-        },
-      };
-    }
+
     if (isServer && nextRuntime === 'nodejs') {
       config.plugins.push(
         new webpack.IgnorePlugin({ resourceRegExp: /^aws-crt$/ })
