@@ -22,8 +22,9 @@ export default async function Home() {
       firstChat = firstChat[0];
     }
   }
+
   return (
-    <div className="w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-indigo-200 via-red-200 to-yellow-100">
+    <div className="w-full h-full bg-[radial-gradient(ellipse_at_bottom,_var(--tw-gradient-stops))] from-slate-400 to-yellow-100">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
         <div className="flex flex-col items-center text-center">
           <div className="flex items-center">
@@ -35,16 +36,11 @@ export default async function Home() {
 
           <div className="flex mt-2">
             {isAuth && firstChat && (
-              <>
-                <Link href={`/chat/${firstChat.id}`}>
-                  <Button>
-                    Go to Chats <ArrowRight className="ml-2" />
-                  </Button>
-                </Link>
-                {/* <div className="ml-3">
-                  <SubscriptionButton isPro={isPro} />
-                </div> */}
-              </>
+              <Link href={`/chat/${firstChat.id}`}>
+                <Button>
+                  Go to Chats <ArrowRight className="ml-2" />
+                </Button>
+              </Link>
             )}
           </div>
 
