@@ -1,10 +1,9 @@
 import './globals.css';
-import type { Metadata } from 'next';
-import { Inter, Montserrat } from 'next/font/google';
+import { Montserrat } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { ClerkProvider } from '@clerk/nextjs';
 import Providers from '@/components/Providers';
-import { constructMetadata } from '@/lib/utils';
+import { cn, constructMetadata } from '@/lib/utils';
 
 // const inter = Inter({ subsets: ['latin'] });
 const montserrat = Montserrat({ subsets: ['latin'] });
@@ -20,7 +19,12 @@ export default function RootLayout({
     <ClerkProvider>
       <Providers>
         <html lang="en">
-          <body className={montserrat.className}>
+          <body
+            className={cn(
+              'min-h-screen antialiased grainy',
+              montserrat.className
+            )}
+          >
             {children}
             <Toaster />
           </body>
