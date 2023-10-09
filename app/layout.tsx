@@ -19,12 +19,7 @@ export default function RootLayout({
     <ClerkProvider>
       <Providers>
         <html lang="en">
-          <body
-            className={cn(
-              'min-h-screen antialiased grainy',
-              montserrat.className
-            )}
-          >
+          <body className={cn('antialiased grainy', montserrat.className)}>
             {children}
             <Toaster />
           </body>

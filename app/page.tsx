@@ -79,6 +79,25 @@ export default async function Home() {
           </div>
         </div>
       </div>
+      <div className="inline absolute bottom-0 left-0 m-2">
+        By{' '}
+        <a
+          className="text-eye underline"
+          href="https://molin7.vercel.app/"
+          target="_blank"
+        >
+          @molin
+        </a>
+        <br />
+        View source on{' '}
+        <a
+          className="text-eye underline"
+          href="https://github.com/MolinDeng/chatpdf"
+          target="_blank"
+        >
+          Github
+        </a>
+      </div>
     </div>
   );
 }
