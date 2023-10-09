@@ -4,14 +4,12 @@ import { Inter, Montserrat } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
 import { ClerkProvider } from '@clerk/nextjs';
 import Providers from '@/components/Providers';
+import { constructMetadata } from '@/lib/utils';
 
 // const inter = Inter({ subsets: ['latin'] });
 const montserrat = Montserrat({ subsets: ['latin'] });
 
-export const metadata: Metadata = {
-  title: 'Home | ChatPDF',
-  description: '',
-};
+export const metadata = constructMetadata();
 
 export default function RootLayout({
   children,
